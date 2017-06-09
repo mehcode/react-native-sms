@@ -33,10 +33,13 @@ public class SendSMSModule extends ReactContextBaseJavaModule implements Activit
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        //System.out.println("in module onActivityResult() request " + requestCode + " result " + resultCode);
+//        System.out.println("in module onActivityResult() request " + requestCode + " result " + resultCode);
         //canceled intent
+
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
             sendCallback(false, true, false);
+        } else if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            sendCallback(true, false, false);
         }
     }
 
@@ -56,7 +59,7 @@ public class SendSMSModule extends ReactContextBaseJavaModule implements Activit
     public void send(ReadableMap options, final Callback callback) {
         try {
             this.callback = callback;
-            new SendSMSObserver(reactContext, this, options).start();
+            // new SendSMSObserver(reactContext, this, options).start();
 
             String body = options.hasKey("body") ? options.getString("body") : "";
             ReadableArray recipients = options.hasKey("recipients") ? options.getArray("recipients") : null;
